@@ -10,6 +10,7 @@ __pycache__/
 _build/
 build/
 dist/
+_dist/
 
 # Unit test / coverage reports
 htmlcov/
@@ -32,3 +33,4 @@ coverage.xml
 .env
 .venv
 venv/
+ENV_LOCAL

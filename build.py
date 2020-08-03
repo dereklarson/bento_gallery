@@ -46,6 +46,10 @@ def prepare_stage(build_args):
     # Completely clean prior build and recreate with source code
     FM.recreate(build_args.stg_dir)
     FM.copy(f"{build_args.app}", f"{build_args.stg_dir}/{build_args.app}")
+    try:
+        FM.copy(f"{build_args.app}/assets", f"{build_args.stg_dir}/assets")
+    except Exception:
+        pass
 
 
 def add_docker(build_args):
@@ -61,6 +65,11 @@ def add_docker(build_args):
             logging.info(f"Couldn't merge docker-compose and dev-docker-compose")
     else:
         FM.remove(dev_compose, ignorable=True)
+
+
+def add_dist(build_args):
+    logging.info(f"Adding python dists: ../bento/dist/*.whl => {build_args.stg_dir}")
+    FM.copy("../bento/dist/*.whl", build_args.stg_dir)
 
 
 def env_file(build_args):
@@ -180,7 +189,7 @@ if __name__ == "__main__":
         os.environ["LOGLEVEL"] = "10"
         logging.setLevel(10)
 
-    args.env = environment.init("ENV")
+    args.env = environment.init("ENV_LOCAL")
 
     # Point staging directory to app-specific directory
     args.stg_dir = f"{args.build_dir}/{args.app}"
@@ -193,6 +202,7 @@ if __name__ == "__main__":
         tag,
         prepare_stage,
         add_docker,
+        add_dist,
         env_file,
         prepare_entrypoint,
         execute if args.execute else None,
