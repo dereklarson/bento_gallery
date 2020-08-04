@@ -53,20 +53,23 @@ def join_reference_data(idf, data_path, filename, on_key, filters=(), col_map=No
     return join_df
 
 
-def load_covid_raw_data(data_path, filename):
-    df = pd.read_csv(f"{data_path}/{filename}", parse_dates=["Date"])
+def load_covid_raw_data(data_path, filename, nrows=None):
+    read_args = {}
+    if nrows:
+        read_args["nrows"] = nrows
+    idf = pd.read_csv(f"{data_path}/{filename}", parse_dates=["Date"], **read_args)
     # logging.info(f"*** Loaded DF from {data_path} with {len(df)} rows***")
-    df = util.snakify_column_names(df)
-    raw_df = df.rename(columns={"confirmed": "cases"})
+    idf = util.snakify_column_names(idf)
+    raw_df = idf.rename(columns={"confirmed": "cases"})
     # logging.debug("Removing Diamond Princess and renaming Korea, South => RoK")
     raw_df = raw_df[raw_df["country"] != "Diamond Princess"]
     raw_df.loc[raw_df["country"] == "Korea, South", "country"] = "Korea, Republic of"
     return raw_df
 
 
-def process_covid_raw_data(data_path):
+def process_covid_raw_data(data_path, nrows=None):
     filename = f"covid-19/data/countries-aggregated.csv"
-    idf = load_covid_raw_data(data_path, filename)
+    idf = load_covid_raw_data(data_path, filename, nrows=nrows)
     normalize_countries(idf)
     idf = idf.groupby(["date", "country", "alpha3"]).sum().reset_index()
     pop_file = "population/ref_world_pop.csv"
@@ -85,10 +88,10 @@ def process_covid_raw_data(data_path):
     return idf
 
 
-def load():
+def load(nrows=None):
     data_path = f"{os.environ['APP_HOME']}/{os.environ['DATA_DIR']}"
     data = {
-        "df": process_covid_raw_data(data_path),
+        "df": process_covid_raw_data(data_path, nrows=nrows),
         "keys": ["country"],
         "types": {
             "date": "date",

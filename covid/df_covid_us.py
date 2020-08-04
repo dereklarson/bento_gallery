@@ -72,9 +72,12 @@ def join_reference_data(idf, data_path, filename, on_key, filters=(), col_map=No
     return join_df
 
 
-def process_df(data_path):
+def process_df(data_path, nrows=None):
+    read_args = {}
+    if nrows:
+        read_args["nrows"] = nrows
     filename = "nyt-covid-states/us-counties.csv"
-    idf = pd.read_csv(f"{data_path}/{filename}", parse_dates=["date"])
+    idf = pd.read_csv(f"{data_path}/{filename}", parse_dates=["date"], **read_args)
     exclude = ["Guam", "Northern Mariana Islands", "Puerto Rico", "Virgin Islands"]
     idf = idf[~idf.state.isin(exclude)]
     idf["combined"] = idf.county + "|" + idf.state + "|" + idf.fips.astype(str)
@@ -98,10 +101,10 @@ def process_df(data_path):
     return odf
 
 
-def load():
+def load(nrows=None):
     data_path = f"{os.environ['APP_HOME']}/{os.environ['DATA_DIR']}"
     data = {
-        "df": process_df(data_path),
+        "df": process_df(data_path, nrows=nrows),
         "keys": ["fips", "county", "state"],
         "types": {
             "date": "date",

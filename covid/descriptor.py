@@ -141,14 +141,16 @@ us_trends_page = {
     },
 }
 
+nrows = None
+
 descriptor = {
     "name": "demonstration",
     "theme": "dark",
     "theme_dict": {},
     "appbar": {"title": "COVID Live"},
     "data": {
-        "covid_us": {"module": "covid.df_covid_us"},
-        "covid_world": {"module": "covid.df_covid_world"},
+        "covid_us": {"module": "covid.df_covid_us", "args": {"nrows": nrows}},
+        "covid_world": {"module": "covid.df_covid_world", "args": {"nrows": nrows}},
     },
     "pages": {
         "globe": globe_page,

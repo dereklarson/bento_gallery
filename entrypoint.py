@@ -1,5 +1,6 @@
 import importlib
 import os
+import time  # noqa
 
 from bento import bento
 from bento.common import logger
@@ -13,6 +14,9 @@ desc_file = importlib.import_module(f"{os.environ['APP']}.descriptor")
 app_def = bento.Bento(desc_file.descriptor)
 if app_def.valid:
     app_def.write(app_output="bento_app.py")
+
+    # This is useful for debugging some issues where we can't launch the server
+    # time.sleep(240)
 
     # Gunicorn requires an object containing the server: app.server
     from bento_app import app  # noqa
