@@ -90,11 +90,19 @@ def process_df(data_path, nrows=None):
     idf["state_abbr"] = idf["state"].map(name_to_abbr)
     idf["county"] = idf["county"] + (", " + idf["state_abbr"]).fillna("")
     idf = idf.drop(["combined"], axis=1).fillna(0)
+    idf = idf[idf.fips != 0]
 
     # Add population reference
     pop_file = "population/ref_county_pop.csv"
     odf = join_reference_data(idf, data_path, pop_file, on_key=["fips"])
     odf["fips"] = odf["fips"].astype(str).str.replace("\.0", "").str.zfill(5)  # noqa
+    # Calculate whole state values separately, and concat
+    sdf = odf.copy()
+    sdf.loc[:, "fips"] = sdf["fips"].str.slice(0, 2)
+    sdf = sdf.groupby(["date", "fips", "state", "state_abbr"]).sum().reset_index()
+    odf = pd.concat([odf.drop("state", axis=1), sdf]).fillna("None")
+
+    # Normalize by population values
     odf["cases_per_100k"] = odf["cases"] * 1e5 / odf["population"]
     odf["deaths_per_100k"] = odf["deaths"] * 1e5 / odf["population"]
     odf = odf.drop(["population"], axis=1)

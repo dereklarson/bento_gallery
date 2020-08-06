@@ -25,7 +25,7 @@ globe_page = {
         "top10": {
             "type": "ranking",
             "width": 3,
-            "args": {"key": "country"},
+            "args": {"key": "country", "text_key": "country"},
             "nformat": ".2f",
         },
         "globemap": {
@@ -89,7 +89,7 @@ usgeo_page = {
             },
         },
         "date": {"type": "date_picker"},
-        "top10": {"type": "ranking", "width": 3, "args": {"nformat": ".2f"}},
+        "top10": {"type": "ranking", "width": 3, "args": {}},
         "map_settings": {
             "type": "option_set",
             "args": {
@@ -126,7 +126,11 @@ us_trends_page = {
         "pick_state": {
             "type": "filter_set",
             "width": 4,
-            "args": {"columns": ["state", "county"], "vertical": True},
+            "args": {
+                "columns": ["state", "county"],
+                "vertical": True,
+                "state.default": ["None"],
+            },
         },
         "analytics": {"type": "analytics_set", "args": {"vertical": True}},
         "trend": {"type": "graph"},
@@ -142,16 +146,18 @@ us_trends_page = {
 }
 
 nrows = None
+# nrows = 1000
 
 descriptor = {
     "name": "demonstration",
     "theme": "dark",
-    "theme_dict": {},
-    "appbar": {"title": "COVID Live"},
+    "theme_dict": {"color__on_primary": "white", "color__primary": "#329dfa"},
+    "appbar": {"title": "COVID Live", "image": "covid-banner-blue.jpg"},
     "data": {
         "covid_us": {"module": "covid.df_covid_us", "args": {"nrows": nrows}},
         "covid_world": {"module": "covid.df_covid_world", "args": {"nrows": nrows}},
     },
+    "show_help": True,
     "pages": {
         "globe": globe_page,
         "world_trends": world_trends_page,
