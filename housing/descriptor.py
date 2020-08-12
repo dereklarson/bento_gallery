@@ -1,7 +1,25 @@
+# NOTE Text from Zillow Research page
+zhvi = """ The ZHVI was launched in 2006, and in its most recent iteration
+prior to publication of November 2019 data it was calculated as the median
+Zestimate value for a fixed (over time) set of homes in a given area,
+representing that area’s median home value."""
+
+zri = """ The Zillow Rent Index (ZRI) is a dollar-valued index intended to
+capture typical market rent for a given segment (IE, multifamily or
+single-family units) and/or geography (IE for a given ZIP code, city, county,
+state or metro) by leveraging Rent Zestimates."""
+
+map_text = {
+    "Zillow Home Value Index": zhvi,
+    "Zillow Rent Index": zri,
+    "default": "Some metrics here are missing data, which skews the color scale.",
+}
+
 map_page = {
     "dataid": "zillow_2020",
     "subtitle": "Metrics for 2020 from Zillow",
     "banks": {
+        "info": {"type": "info", "args": {"text": map_text}},
         "axes": {
             "type": "axis_controls",
             "width": 3,
@@ -15,12 +33,12 @@ map_page = {
             "type": "ranking",
             "open": False,
             "width": 3,
-            "args": {"key": "state", "nformat": ".2f"},
+            "args": {"key": "state", "text_key": "state"},
         },
     },
     "layout": [["statemap"]],
-    "sidebar": ["axes", "_top10"],
-    "connections": {"axes": {"statemap", "top10"}},
+    "sidebar": ["info", "axes", "_top10"],
+    "connections": {"axes": {"info", "statemap", "top10"}},
 }
 
 trend_page = {

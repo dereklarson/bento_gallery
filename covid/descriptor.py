@@ -1,3 +1,9 @@
+globe_text = """
+An interactive, visual presentation of world COVID-19 cases by country. Data is from
+the 'datasets/covid-19' github repo, and inspiration was drawn from the Johns Hopkins
+covid dash.
+"""
+
 globe_page = {
     "dataid": "covid_world",
     "subtitle": "World geographical view by country",
@@ -22,6 +28,14 @@ globe_page = {
             },
         },
         "date": {"type": "date_picker"},
+        "info": {
+            "type": "info",
+            "width": 5,
+            "args": {
+                "text": globe_text,
+                "Div.style": {"lineHeight": 1.5, "fontSize": "1.8rem"},
+            },
+        },
         "top10": {
             "type": "ranking",
             "width": 3,
@@ -33,7 +47,7 @@ globe_page = {
             "args": {"category": "map", "variant": "choropleth", "geo": "world"},
         },
     },
-    "layout": [["agg", "axis", "date"], ["top10", "globemap"],],
+    "layout": [["agg", "axis", "date", "info"], ["top10", "globemap"],],
     "connections": {
         "axis": {"globemap", "top10"},
         "date": {"globemap", "top10", "agg"},
@@ -66,6 +80,10 @@ world_trends_page = {
     },
 }
 
+usgeo_text = """
+Data for US COVID-19 cases is drawn from the New York Times Github repository.
+"""
+
 usgeo_page = {
     "dataid": "covid_us",
     "subtitle": "United States geographical view by state/county",
@@ -89,6 +107,13 @@ usgeo_page = {
             },
         },
         "date": {"type": "date_picker"},
+        "info": {
+            "type": "info",
+            "args": {
+                "text": usgeo_text,
+                "Div.style": {"lineHeight": 1.5, "fontStyle": "italic"},
+            },
+        },
         "top10": {"type": "ranking", "width": 3, "args": {}},
         "map_settings": {
             "type": "option_set",
@@ -107,7 +132,7 @@ usgeo_page = {
             "args": {"category": "map", "variant": "choropleth"},
         },
     },
-    "layout": [["agg", "map_settings", "axis", "date"], ["top10", "countymap"]],
+    "layout": [["agg", "map_settings", "axis", "date", "info"], ["top10", "countymap"]],
     "connections": {
         "axis": {"countymap", "top10"},
         "map_settings": {"countymap", "top10"},
