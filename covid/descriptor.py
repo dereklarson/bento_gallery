@@ -63,7 +63,7 @@ world_trends_page = {
             "args": {"use": "xy", "multi": "y", "scale": True, "vertical": True},
         },
         "pick_country": {
-            "type": "filter_set",
+            "type": "selector",
             "width": 4,
             "args": {"columns": ["country"], "country.default": ["Brazil", "Italy"]},
         },
@@ -149,7 +149,7 @@ us_trends_page = {
             "args": {"use": "xy", "multi": "y", "scale": True, "vertical": True},
         },
         "pick_state": {
-            "type": "filter_set",
+            "type": "selector",
             "width": 4,
             "args": {
                 "columns": ["state", "county"],

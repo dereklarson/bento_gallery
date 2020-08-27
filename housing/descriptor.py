@@ -46,7 +46,7 @@ trend_page = {
     "subtitle": "House value since 1996 from Zillow",
     "banks": {
         "filters": {
-            "type": "filter_set",
+            "type": "selector",
             "width": 6,
             "args": {
                 "columns": ["County"],
