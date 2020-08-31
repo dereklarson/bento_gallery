@@ -60,21 +60,18 @@ world_trends_page = {
     "banks": {
         "axis": {
             "type": "axis_controls",
-            "args": {"use": "xy", "multi": "y", "scale": True, "vertical": True},
+            "width": 3,
+            "args": {"use": "y", "multi": "y", "scale": True},
         },
-        "pick_country": {
-            "type": "selector",
-            "width": 4,
-            "args": {"columns": ["country"], "country.default": ["Brazil", "Italy"]},
-        },
-        "analytics": {"type": "analytics_set", "args": {"vertical": True}},
-        "trend": {"type": "graph"},
-        "style": {"type": "style_controls"},
+        "select": {"type": "selector", "width": 9},
+        "analytics": {"type": "analytics_set"},
+        "trend": {"type": "graph", "args": {"x_column": "date", "x_scale": "date"}},
+        "style": {"type": "style_controls", "width": 6},
     },
-    "layout": [["axis", "pick_country", "analytics", "style"], ["trend"]],
+    "layout": [["axis", "select"], ["analytics", "style"], ["trend"]],
     "connections": {
         "axis": {"trend"},
-        "pick_country": {"trend"},
+        "select": {"trend"},
         "analytics": {"trend"},
         "style": {"trend"},
     },
@@ -171,7 +168,7 @@ us_trends_page = {
 }
 
 nrows = None
-# nrows = 1000
+# nrows = 10000
 
 descriptor = {
     "name": "demonstration",
@@ -180,7 +177,7 @@ descriptor = {
     "appbar": {"title": "COVID Live", "image": "covid-banner-blue.jpg"},
     "data": {
         "covid_us": {"module": "covid.df_covid_us", "args": {"nrows": nrows}},
-        "covid_world": {"module": "covid.df_covid_world", "args": {"nrows": nrows}},
+        "covid_world": {"module": "covid.df_covid_jhworld"},
     },
     "show_help": True,
     "pages": {
