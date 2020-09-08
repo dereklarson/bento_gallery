@@ -168,7 +168,7 @@ us_trends_page = {
 }
 
 nrows = None
-# nrows = 10000
+nrows = 10000
 
 descriptor = {
     "name": "demonstration",

@@ -81,7 +81,7 @@ def load(nrows=None):
     deaths = "time_series_covid19_deaths_global.csv"
     raw_df = load_covid_raw_data(data_path, base, cases, deaths)
 
-    ref_df = util.df_loader("world_country_reference.csv")
+    ref_df = datautil.df_loader("world_country_reference.csv")
     jdf = add_country_reference(raw_df, ref_df)
     pdf = process_covid_data(jdf)
     data = datautil.autostructure(pdf)
